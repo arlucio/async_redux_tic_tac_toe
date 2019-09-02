@@ -1,0 +1,63 @@
+{
+  "project_info": {
+    "project_number": "799779703529",
+    "firebase_url": "https://async-redux-hash-game.firebaseio.com",
+    "project_id": "async-redux-hash-game",
+    "storage_bucket": "async-redux-hash-game.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:799779703529:android:f2c4e842f5c5a115",
+        "android_client_info": {
+          "package_name": "com.hashgame.android"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "799779703529-4m8qcki5bg6i2jdgvikgcnsnhedeaem6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.hashgame.android",
+            "certificate_hash": "1cb085f79f7b16dcebe1573a4c0be0873a6a8fa6"
+          }
+        },
+        {
+          "client_id": "799779703529-l30ej5eos6agg7keonn509qe2den8lf2.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.hashgame.android",
+            "certificate_hash": "f77b10c8c7c0d4191866bdbdcd1c703eaee7d0f5"
+          }
+        },
+        {
+          "client_id": "799779703529-utfhvd483us4m57ugh7keleo8old2ihd.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDovCmXhJihPVz1lj7mRLJdzcAqNxPxNzE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "799779703529-utfhvd483us4m57ugh7keleo8old2ihd.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "799779703529-jj5ngtpqnvfff2d887b157madv8qrukr.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.hashgame.ios"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

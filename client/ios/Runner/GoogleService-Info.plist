@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>799779703529-jj5ngtpqnvfff2d887b157madv8qrukr.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.799779703529-jj5ngtpqnvfff2d887b157madv8qrukr</string>
+	<key>API_KEY</key>
+	<string>AIzaSyCQCL1UKj-qmIjVanD6S7xq38pL-1fmKUo</string>
+	<key>GCM_SENDER_ID</key>
+	<string>799779703529</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.hashgame.ios</string>
+	<key>PROJECT_ID</key>
+	<string>async-redux-hash-game</string>
+	<key>STORAGE_BUCKET</key>
+	<string>async-redux-hash-game.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:799779703529:ios:db12835ec0112a19</string>
+	<key>DATABASE_URL</key>
+	<string>https://async-redux-hash-game.firebaseio.com</string>
+</dict>
+</plist>
