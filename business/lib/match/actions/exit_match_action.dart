@@ -14,7 +14,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 
 /// Erase everything from the Match and send player to start screen
-/// Obs: Is necessary to do 3 calls here because when I delete the root collection it doesn't delete the leafs collections
+/// Obs: It's necessary to do 3 calls here because when you delete the root collection it doesn't delete the leafs collections
 
 class ExitMatchAction extends AppBaseAction {
   final bool isFirstPlayerToLeaveMatch;
@@ -26,6 +26,7 @@ class ExitMatchAction extends AppBaseAction {
   @override
   Future<AppState> reduce() async {
     String routeName = NavigateAction.getCurrentNavigatorRouteName(buildContext);
+
     if (routeName == null) {
       // this means a dialog is open
       dispatch(NavigateAction<AppState>.popUntil('matchRoute'));
@@ -61,8 +62,6 @@ class ExitMatchAction extends AppBaseAction {
         }
       });
 
-      await firestore.collection('matches').document(matchState.matchID).delete();
-    } else {
       await firestore.collection('matches').document(matchState.matchID).delete();
     }
 

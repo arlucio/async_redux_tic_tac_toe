@@ -3,14 +3,12 @@ import 'package:client/match_making/widgets/exit_button.dart';
 
 /// This widget shows up when you are on the matchmaking database and there is still no one else in it.
 /// Also shows while the players are doing 'handshaking', that in this case is just exchanging the player names,
-/// but could be a lot of info.
+/// but in real cases it could be a lot of info.
 ///
 /// This could have been done in one less step (no need to second player to come here) just also putting first player
-/// name on RTDB but this way is a nicer and more complete example for a real complex pré-match handshaking case
+/// name on RTDB but this way is a nicer and more complete example for a real pré-match handshaking case.
 ///
 ///  After this step both players have exchanged their name and id and have the matchID.
-///
-/// ToDO: Recheck this
 
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';

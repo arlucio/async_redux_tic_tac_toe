@@ -1,3 +1,3 @@
-# Flutter Tic Tac Toe Game
+# Flutter Tic Tac Toe game
 
-Multiplayer Tic Tac Toe Game app developed as a Flutter showcase using async_redux package and Firebase.
+Multiplayer Tic Tac Toe game app developed as a Flutter showcase using async_redux package and Firebase.

@@ -24,8 +24,8 @@ dependencies:
   rxdart: ^0.22.0
   faker: ^1.1.1
   get_it: ^2.0.3
-#  built_value: 6.7.0
-#  built_collection: 4.2.2
+  built_value: 6.7.0
+  built_collection: 4.2.2
 
 dev_dependencies:
   flutter_test:

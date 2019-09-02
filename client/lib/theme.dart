@@ -40,6 +40,5 @@ TextTheme _buildDefaultTextTheme(TextTheme base) {
 AppBarTheme _buildDefaultAppBarTheme(AppBarTheme base) {
   return base.copyWith(
     color: Colors.indigo.shade700,
-//      textTheme: base.textTheme.copyWith()
   );
 }

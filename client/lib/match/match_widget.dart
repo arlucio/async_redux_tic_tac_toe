@@ -18,7 +18,6 @@ import 'package:flutter/scheduler.dart';
 /// Only the lastPlay is updated on database and catch by a Firestore query stream to update the state
 
 class MatchWidget extends StatelessWidget {
-  final int filledHashPositions;
   final int scoreHomePlayer;
   final int scoreVisitingPlayer;
   final String exitMatchPlayer;
@@ -35,7 +34,6 @@ class MatchWidget extends StatelessWidget {
 
   MatchWidget({
     Key key,
-    this.filledHashPositions,
     this.scoreHomePlayer,
     this.scoreVisitingPlayer,
     this.exitMatchPlayer,
@@ -93,7 +91,7 @@ class MatchWidget extends StatelessWidget {
   }
 
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  /// ------------Helper Methods (Runs Every Build)------------
+  /// ------------Helper Methods (Runs Every Build) ------------
 
   void checkEndOfTheMatch(BuildContext context) {
     /// Draw case
