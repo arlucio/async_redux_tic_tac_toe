@@ -4,7 +4,7 @@ import 'package:business/match_making/actions/exit_match_making_action.dart';
 import 'package:client/match_making/match_making_widget.dart';
 import 'package:flutter/material.dart';
 
-String matchMakingRoute = "matchMakingRoute";
+const String matchMakingRoute = "matchMakingRoute";
 
 class MatchMakingConnector extends StatelessWidget {
   MatchMakingConnector({Key key}) : super(key: key);

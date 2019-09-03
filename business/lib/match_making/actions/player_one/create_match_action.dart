@@ -28,8 +28,8 @@ class CreateMatchAction extends AppBaseAction {
 
     return state.rebuild((b) => b
       ..matchState.update((b) => b
-        ..hashState =
-            BuiltList<String>(['none', 'none', 'none', 'none', 'none', 'none', 'none', 'none', 'none']).toBuilder()
+        ..hashState = BuiltList<String>(
+            ['none', 'none', 'none', 'none', 'none', 'none', 'none', 'none', 'none']).toBuilder()
         ..visitingPlayer.id = playerTwoId
         ..visitingPlayer.number = PlayerNumber.two
         ..matchID = matchRef.documentID

@@ -14,7 +14,7 @@ class SetPlayerNumberAction extends ReduxAction<AppState> {
   }
 
   @override
-  Future<AppState> reduce() async {
+  AppState reduce() {
     return state.rebuild(
       (b) => b
         ..homePlayerState.update(

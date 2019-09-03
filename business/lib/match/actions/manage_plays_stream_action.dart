@@ -38,7 +38,8 @@ class ManagePlaysStreamAction extends AppBaseAction {
               dispatch(PlayerLeftMatchAction(exitMatchPlayer: exitMatchPlayer));
               return null;
             } else if (matchDoc.data.containsKey('lastPlay')) {
-              var matchData = standardSerializers.deserializeWith(MatchData.serializer, matchDoc.data);
+              var matchData =
+                  standardSerializers.deserializeWith(MatchData.serializer, matchDoc.data);
               dispatch(ChangeMatchHashStateAction(
                 playPosition: matchData.lastPlay.playNumber,
                 playType: matchData.lastPlay.playType,

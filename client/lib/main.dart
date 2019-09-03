@@ -24,7 +24,7 @@ final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 void main() async {
   NavigateAction.setNavigatorKey(navigatorKey);
 
-  //Configure Firebase app
+  // Configure Firebase app
   final firebaseApp = await FirebaseApp.configure(
     name: 'async-redux-hash-game',
     options: Platform.isIOS
@@ -45,7 +45,7 @@ void main() async {
   final fbDatabase = FirebaseDatabase(app: firebaseApp);
   final firestore = Firestore(app: firebaseApp);
 
-  //Register Firestore and Firebase Database to be  globally accessible via geIt Service Locator
+  // Register Firestore and Firebase Database to be globally accessible via get it Service Locator
   getIt.registerSingleton<Firestore>(firestore);
   getIt.registerSingleton<FirebaseDatabase>(fbDatabase);
 
@@ -53,7 +53,7 @@ void main() async {
   var playerID = await signInAnonymously();
 
   // Start state and run app
-  var state = AppState.initialState(firebaseApp, playerID);
+  var state = AppState.initialState(playerID);
   store = Store<AppState>(initialState: state);
   runApp(TicTacToeApp());
 }
@@ -70,8 +70,6 @@ class TicTacToeApp extends StatelessWidget {
               matchMakingRoute: (context) => MatchMakingConnector(),
               matchRoute: (context) => MatchConnector(),
             },
-            home: UserExceptionDialog<AppState>(
-              child: HomeConnector(),
-            )),
+            home: UserExceptionDialog<AppState>(child: HomeConnector())),
       );
 }

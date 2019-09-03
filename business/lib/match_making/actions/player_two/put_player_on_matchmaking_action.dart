@@ -6,13 +6,17 @@ import 'package:business/services/get_it_instance.dart';
 import 'package:firebase_database/firebase_database.dart';
 
 class PutPlayerOnMatchmakingAction extends AppBaseAction {
+  //
   @override
   Future<AppState> reduce() async {
+    //
     final fbDatabase = getIt<FirebaseDatabase>();
+
     await fbDatabase.reference().child('matchmaking/playerID').runTransaction((mutableData) async {
       mutableData.value = homePlayer.id;
       return mutableData;
     });
+
     dispatch(PlayerTwoHandshakingStream.startStream(playerID: homePlayer.id));
     return null;
   }
