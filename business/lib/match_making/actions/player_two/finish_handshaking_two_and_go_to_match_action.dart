@@ -16,7 +16,7 @@ import 'package:flutter/foundation.dart';
 /// 0 - Get PlayerOne Data from Firestore using the received matchID
 /// 1 - Set PlayerTwo on Firestore using the received matchID
 /// 2 - Finish Handshaking Stream and start all Match Streams
-/// 4 - Go to Match screen
+/// 3 - Go to Match screen
 
 class FinishHandshakingTwoAndGoToMatchAction extends AppBaseAction {
   DocumentSnapshot matchDoc;
@@ -28,20 +28,27 @@ class FinishHandshakingTwoAndGoToMatchAction extends AppBaseAction {
     var matchID = matchDoc.documentID;
 
     // Set playerTwoName on Firestore
-    firestore.collection('matches').document(matchID).updateData({'playerTwoName': homePlayer.name});
+    await firestore
+        .collection('matches')
+        .document(matchID)
+        .updateData({'playerTwoName': homePlayer.name});
 
     dispatch(PlayerTwoHandshakingStream.endStream());
+
     dispatch(ManageScoreStreamsAction.startStream(matchDoc: matchDoc, homePlayerId: homePlayer.id));
+
     dispatch(ManagePlaysStreamAction.startStream(matchID: matchID));
+
     dispatch(ManageWinnerStreamAction.startStream(matchID: matchID));
 
     return state.rebuild((b) => b
       ..matchState.update((b) => b
         ..matchID = matchID
-        ..hashState =
-            BuiltList<String>(['none', 'none', 'none', 'none', 'none', 'none', 'none', 'none', 'none']).toBuilder()));
+        ..hashState = BuiltList<String>(
+            ['none', 'none', 'none', 'none', 'none', 'none', 'none', 'none', 'none']).toBuilder()));
   }
 
   void before() => dispatch(GetPlayerOneFromFirestore(matchID: matchDoc.documentID));
+
   void after() => dispatch(NavigateAction<AppState>.pushReplacementNamed("matchRoute"));
 }

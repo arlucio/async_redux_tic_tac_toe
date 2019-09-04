@@ -19,37 +19,41 @@ class PlayerTwoHandshakingStream extends AppBaseAction {
   static Stream<QuerySnapshot> playerTwoNameStream;
   static StreamSubscription<QuerySnapshot> playerTwoNameStreamSub;
 
-  bool _startStream;
-  bool _endStream;
+  bool start;
 
   PlayerTwoHandshakingStream.startStream({@required this.playerID}) {
-    _startStream = true;
-    playerTwoNameStream =
-        getIt.get<Firestore>().collection('matches').where("playerTwoId", isEqualTo: playerID).snapshots();
+    start = true;
+    playerTwoNameStream = getIt
+        .get<Firestore>()
+        .collection('matches')
+        .where("playerTwoId", isEqualTo: playerID)
+        .snapshots();
   }
 
   PlayerTwoHandshakingStream.endStream({this.playerID}) {
-    _endStream = true;
+    start = false;
   }
 
   @override
   AppState reduce() {
-    if (_startStream == true) {
+    //
+    if (start) {
       playerTwoNameStreamSub = playerTwoNameStream.listen((QuerySnapshot qs) {
-        if (qs.documents.isNotEmpty) {
-          if (qs.documents.first != null) {
-            if (qs.documents.first.data.isNotEmpty) {
-              if (qs.documents.first.data.containsKey('playerOneId')) {
-                var matchDoc = qs.documents.first;
-                dispatch(FinishHandshakingTwoAndGoToMatchAction(matchDoc: matchDoc)); // Set playerTwoName on firestore
-              }
-            }
-          }
+        //
+        if (qs.documents.isNotEmpty &&
+            qs.documents.first != null &&
+            qs.documents.first.data.isNotEmpty &&
+            qs.documents.first.data.containsKey('playerOneId')) {
+          //
+          var matchDoc = qs.documents.first;
+          dispatch(FinishHandshakingTwoAndGoToMatchAction(
+              matchDoc: matchDoc)); // Set playerTwoName on firestore
         }
       });
-    } else if (_endStream == true) {
-      playerTwoNameStreamSub.cancel();
     }
+    //
+    else
+      playerTwoNameStreamSub.cancel();
 
     return null;
   }

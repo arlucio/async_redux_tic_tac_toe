@@ -22,21 +22,27 @@ class ManageScoreStreamsAction extends AppBaseAction {
   ManageScoreStreamsAction.startStream({@required this.matchDoc, @required this.homePlayerId})
       : assert((matchDoc != null) && (homePlayerId != null)) {
     _startStream = true;
+
     homePlayerStream = getIt
         .get<Firestore>()
         .collection('matches')
         .document(matchDoc.documentID)
         .collection('winners')
         .where('playerID',
-            isEqualTo: (homePlayerId == matchDoc['playerOneId']) ? matchDoc['playerOneId'] : matchDoc['playerTwoId'])
+            isEqualTo: (homePlayerId == matchDoc['playerOneId'])
+                ? matchDoc['playerOneId']
+                : matchDoc['playerTwoId'])
         .snapshots();
+
     visitingPlayerStream = getIt
         .get<Firestore>()
         .collection('matches')
         .document(matchDoc.documentID)
         .collection('winners')
         .where('playerID',
-            isEqualTo: (homePlayerId == matchDoc['playerOneId']) ? matchDoc['playerTwoId'] : matchDoc['playerOneId'])
+            isEqualTo: (homePlayerId == matchDoc['playerOneId'])
+                ? matchDoc['playerTwoId']
+                : matchDoc['playerOneId'])
         .snapshots();
   }
 
