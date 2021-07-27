@@ -14,27 +14,31 @@ import 'package:flutter/foundation.dart';
 class FinishHandshakingOneAndGoToMatchAction extends AppBaseAction {
   DocumentSnapshot matchDoc;
 
-  FinishHandshakingOneAndGoToMatchAction({@required this.matchDoc}) : assert(matchDoc != null);
+  FinishHandshakingOneAndGoToMatchAction({@required this.matchDoc})
+      : assert(matchDoc != null);
 
   @override
   Future<AppState> reduce() async {
-    var matchID = matchDoc.documentID;
-    var matchData = matchDoc.data;
+    var matchID = matchDoc.id;
+    var matchData = matchDoc.data();
     var playerTwoName = matchData['playerTwoName'];
 
     var rebuiltState = state.rebuild((b) => b
       ..matchState.update((b) => b
         ..visitingPlayer.name = playerTwoName
         ..matchID = matchID));
-    await Future.delayed(Duration(milliseconds: 500), () {}); // just a small delay to avoid errors
+    await Future.delayed(Duration(milliseconds: 500),
+        () {}); // just a small delay to avoid errors
 
     dispatch(PlayerOneHandshakingStream.endStream());
-    dispatch(ManageScoreStreamsAction.startStream(matchDoc: matchDoc, homePlayerId: homePlayer.id));
+    dispatch(ManageScoreStreamsAction.startStream(
+        matchDoc: matchDoc, homePlayerId: homePlayer.id));
     dispatch(ManagePlaysStreamAction.startStream(matchID: matchID));
     dispatch(ManageWinnerStreamAction.startStream(matchID: matchID));
 
     return rebuiltState;
   }
 
-  void after() => dispatch(NavigateAction<AppState>.pushReplacementNamed("matchRoute"));
+  void after() =>
+      dispatch(NavigateAction<AppState>.pushReplacementNamed("matchRoute"));
 }

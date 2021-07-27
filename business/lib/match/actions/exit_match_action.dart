@@ -25,11 +25,13 @@ class ExitMatchAction extends AppBaseAction {
 
   @override
   Future<AppState> reduce() async {
-    String routeName = NavigateAction.getCurrentNavigatorRouteName(buildContext);
+    String routeName =
+        NavigateAction.getCurrentNavigatorRouteName(buildContext);
 
     if (routeName == null) {
       // this means a dialog is open
-      dispatch(NavigateAction<AppState>.popUntil('matchRoute'));
+      dispatch(
+          NavigateAction<AppState>.popUntil(ModalRoute.withName('matchRoute')));
     }
 
     if (isFirstPlayerToLeaveMatch == true) {
@@ -37,32 +39,38 @@ class ExitMatchAction extends AppBaseAction {
       dispatch(ManageScoreStreamsAction.endStream());
       dispatch(ManageWinnerStreamAction.endStream());
 
-      await firestore.collection('matches').document(matchState.matchID).updateData({
+      await getIt<FirebaseFirestore>()
+          .collection('matches')
+          .doc(matchState.matchID)
+          .update({
         'exitMatchPlayer': homePlayer.id,
       });
-      await firestore
+      await getIt<FirebaseFirestore>()
           .collection('matches')
-          .document(matchState.matchID)
+          .doc(matchState.matchID)
           .collection('lastWinner')
-          .getDocuments()
+          .get()
           .then((snapshot) {
-        for (DocumentSnapshot ds in snapshot.documents) {
+        for (DocumentSnapshot ds in snapshot.docs) {
           ds.reference.delete();
         }
       });
 
-      await firestore
+      await getIt<FirebaseFirestore>()
           .collection('matches')
-          .document(matchState.matchID)
+          .doc(matchState.matchID)
           .collection('winners')
-          .getDocuments()
+          .get()
           .then((snapshot) {
-        for (DocumentSnapshot ds in snapshot.documents) {
+        for (DocumentSnapshot ds in snapshot.docs) {
           ds.reference.delete();
         }
       });
 
-      await firestore.collection('matches').document(matchState.matchID).delete();
+      await getIt<FirebaseFirestore>()
+          .collection('matches')
+          .doc(matchState.matchID)
+          .delete();
     }
 
     return state.rebuild((b) => b
@@ -75,8 +83,17 @@ class ExitMatchAction extends AppBaseAction {
         ..playerTurn = ''
         ..scoreHomePlayer = 0
         ..scoreVisitingPlayer = 0
-        ..hashState =
-            BuiltList<String>(['none', 'none', 'none', 'none', 'none', 'none', 'none', 'none', 'none']).toBuilder()));
+        ..hashState = BuiltList<String>([
+          'none',
+          'none',
+          'none',
+          'none',
+          'none',
+          'none',
+          'none',
+          'none',
+          'none'
+        ]).toBuilder()));
   }
 
   void before() => dispatch(AddResultToHighScoresAction());

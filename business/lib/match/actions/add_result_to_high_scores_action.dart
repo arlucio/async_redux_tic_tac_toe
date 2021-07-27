@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:business/app/model/app_base_action.dart';
 import 'package:business/app/model/app_state.dart';
 import 'package:business/services/get_it_instance.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 /// Every player can be added to HighScores only once and that value is updated with higher scores
 /// The High Scores are just an example, doesn't make a lot of sense.
@@ -12,13 +13,21 @@ import 'package:business/services/get_it_instance.dart';
 class AddResultToHighScoresAction extends AppBaseAction {
   @override
   Future<AppState> reduce() async {
-    var points = matchState.scoreHomePlayer * 1000 - matchState.scoreVisitingPlayer * 500;
+    var points = matchState.scoreHomePlayer * 1000 -
+        matchState.scoreVisitingPlayer * 500;
 
-    firestore.collection('highScores').where("playerID", isEqualTo: homePlayer.id).getDocuments().then((snapshot) {
-      if (snapshot.documents.isNotEmpty) {
-        if (snapshot.documents.first != null) {
-          if (snapshot.documents.first.data['score'] < points) {
-            firestore.collection('highScores').document(snapshot.documents.first.documentID).updateData({
+    getIt<FirebaseFirestore>()
+        .collection('highScores')
+        .where("playerID", isEqualTo: homePlayer.id)
+        .get()
+        .then((snapshot) {
+      if (snapshot.docs.isNotEmpty) {
+        if (snapshot.docs.first != null) {
+          if (snapshot.docs.first.data()['score'] < points) {
+            getIt<FirebaseFirestore>()
+                .collection('highScores')
+                .doc(snapshot.docs.first.id)
+                .update({
               'playerID': homePlayer.id,
               'playerName': homePlayer.name,
               'score': points,
@@ -26,7 +35,7 @@ class AddResultToHighScoresAction extends AppBaseAction {
           }
         }
       } else {
-        firestore.collection('highScores').document().setData({
+        getIt<FirebaseFirestore>().collection('highScores').doc().set({
           'playerID': homePlayer.id,
           'playerName': homePlayer.name,
           'score': points,

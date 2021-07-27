@@ -7,6 +7,7 @@ import 'package:business/app/model/app_state.dart';
 import 'package:business/match_making/actions/player_one/player_one_handshaking_stream.dart';
 import 'package:business/player/model/player_model.dart';
 import 'package:business/services/get_it_instance.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class CreateMatchAction extends AppBaseAction {
@@ -16,25 +17,35 @@ class CreateMatchAction extends AppBaseAction {
 
   @override
   Future<AppState> reduce() async {
-    var matchRef = firestore.collection('matches').document();
-    await matchRef.setData({
+    var matchRef = getIt.get<FirebaseFirestore>().collection('matches').doc();
+    await matchRef.set({
       'playerOneId': homePlayer.id,
       'playerTwoId': playerTwoId,
       'playerOneName': homePlayer.name,
       'playerTurn': homePlayer.id,
     });
 
-    dispatch(PlayerOneHandshakingStream.startStream(matchID: matchRef.documentID));
+    dispatch(PlayerOneHandshakingStream.startStream(matchID: matchRef.id));
 
     return state.rebuild((b) => b
       ..matchState.update((b) => b
-        ..hashState =
-            BuiltList<String>(['none', 'none', 'none', 'none', 'none', 'none', 'none', 'none', 'none']).toBuilder()
+        ..hashState = BuiltList<String>([
+          'none',
+          'none',
+          'none',
+          'none',
+          'none',
+          'none',
+          'none',
+          'none',
+          'none'
+        ]).toBuilder()
         ..visitingPlayer.id = playerTwoId
         ..visitingPlayer.number = PlayerNumber.two
-        ..matchID = matchRef.documentID
+        ..matchID = matchRef.id
         ..playerTurn = homePlayer.id));
   }
 
-  void after() => dispatch(NavigateAction<AppState>.pushReplacementNamed("matchMakingRoute"));
+  void after() => dispatch(
+      NavigateAction<AppState>.pushReplacementNamed("matchMakingRoute"));
 }

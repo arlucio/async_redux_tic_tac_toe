@@ -15,9 +15,14 @@ class MakePlayAction extends AppBaseAction {
 
   @override
   Future<AppState> reduce() async {
-    var hashField = (homePlayer.number == PlayerNumber.one) ? 'cross' : 'circle';
+    var hashField =
+        (homePlayer.number == PlayerNumber.one) ? 'cross' : 'circle';
 
-    await getIt.get<Firestore>().collection('matches').document(state.matchState.matchID).updateData({
+    await getIt
+        .get<FirebaseFirestore>()
+        .collection('matches')
+        .doc(state.matchState.matchID)
+        .update({
       'lastPlay': {'playType': hashField, 'playNumber': hashIndex},
       'playerTurn': matchState.visitingPlayer.id,
     });

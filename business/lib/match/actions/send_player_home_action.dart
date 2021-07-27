@@ -6,6 +6,7 @@ import 'package:business/match/actions/manage_plays_stream_action.dart';
 import 'package:business/match/actions/manage_score_streams_action.dart';
 import 'package:business/match/actions/manage_winner_stream_action.dart';
 import 'package:business/player/model/player_model.dart';
+import 'package:flutter/material.dart';
 
 /// Close streams and send player to home screen
 
@@ -21,10 +22,20 @@ class SendPlayerHomeAction extends AppBaseAction {
         ..winnerPlayer = PlayerNumber.none
         ..scoreHomePlayer = 0
         ..scoreVisitingPlayer = 0
-        ..hashState =
-            BuiltList<String>(['none', 'none', 'none', 'none', 'none', 'none', 'none', 'none', 'none']).toBuilder()));
+        ..hashState = BuiltList<String>([
+          'none',
+          'none',
+          'none',
+          'none',
+          'none',
+          'none',
+          'none',
+          'none',
+          'none'
+        ]).toBuilder()));
   }
 
-  void before() => dispatch(NavigateAction<AppState>.popUntil('matchRoute'));
+  void before() => dispatch(
+      NavigateAction<AppState>.popUntil(ModalRoute.withName('matchRoute')));
   void after() => dispatch(NavigateAction<AppState>.pushReplacementNamed("/"));
 }

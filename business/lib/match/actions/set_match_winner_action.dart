@@ -2,6 +2,7 @@ import 'package:business/app/model/app_base_action.dart';
 import 'package:business/app/model/app_state.dart';
 import 'package:business/player/model/player_model.dart';
 import 'package:business/services/get_it_instance.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 /// The 'winners' collection on database keeps the data of all winners of the match to generate the scores
@@ -10,34 +11,47 @@ import 'package:flutter/material.dart';
 class SetMatchWinnerAction extends AppBaseAction {
   final PlayerNumber winnerPlayer;
 
-  SetMatchWinnerAction({@required this.winnerPlayer}) : assert(winnerPlayer != null);
+  SetMatchWinnerAction({@required this.winnerPlayer})
+      : assert(winnerPlayer != null);
 
   @override
   Future<AppState> reduce() async {
     if (winnerPlayer == PlayerNumber.none) {
-      await firestore
+      await getIt
+          .get<FirebaseFirestore>()
           .collection('matches')
-          .document(matchState.matchID)
+          .doc(matchState.matchID)
           .collection('lastWinner')
           .add({'playerID': 'DRAW'});
 
-      await firestore
+      await getIt
+          .get<FirebaseFirestore>()
           .collection('matches')
-          .document(matchState.matchID)
+          .doc(matchState.matchID)
           .collection('winners')
           .add({'playerID': 'DRAW'});
     } else {
-      await firestore
+      await getIt
+          .get<FirebaseFirestore>()
           .collection('matches')
-          .document(matchState.matchID)
+          .doc(matchState.matchID)
           .collection('lastWinner')
-          .add({'playerID': (winnerPlayer == homePlayer.number) ? homePlayer.id : visitingPlayer.id});
+          .add({
+        'playerID': (winnerPlayer == homePlayer.number)
+            ? homePlayer.id
+            : visitingPlayer.id
+      });
 
-      await firestore
+      await getIt
+          .get<FirebaseFirestore>()
           .collection('matches')
-          .document(matchState.matchID)
+          .doc(matchState.matchID)
           .collection('winners')
-          .add({'playerID': (winnerPlayer == homePlayer.number) ? homePlayer.id : visitingPlayer.id});
+          .add({
+        'playerID': (winnerPlayer == homePlayer.number)
+            ? homePlayer.id
+            : visitingPlayer.id
+      });
     }
     return null;
   }

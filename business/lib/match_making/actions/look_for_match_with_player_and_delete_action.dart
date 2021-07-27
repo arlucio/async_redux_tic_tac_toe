@@ -10,15 +10,20 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class LookForMatchWithPlayerAndDeleteAction extends AppBaseAction {
   @override
   Future<AppState> reduce() async {
-    firestore.collection('matches').where("playerOneId", isEqualTo: homePlayer.id).getDocuments().then((snapshot) {
-      for (DocumentSnapshot ds in snapshot.documents) {
-        ds.reference.collection('lastWinner').getDocuments().then((snapshot) {
-          for (DocumentSnapshot ds in snapshot.documents) {
+    getIt
+        .get<FirebaseFirestore>()
+        .collection('matches')
+        .where("playerOneId", isEqualTo: homePlayer.id)
+        .get()
+        .then((snapshot) {
+      for (DocumentSnapshot ds in snapshot.docs) {
+        ds.reference.collection('lastWinner').get().then((snapshot) {
+          for (DocumentSnapshot ds in snapshot.docs) {
             ds.reference.delete();
           }
 
-          ds.reference.collection('winners').getDocuments().then((snapshot) {
-            for (DocumentSnapshot ds in snapshot.documents) {
+          ds.reference.collection('winners').get().then((snapshot) {
+            for (DocumentSnapshot ds in snapshot.docs) {
               ds.reference.delete();
             }
           });
@@ -27,8 +32,13 @@ class LookForMatchWithPlayerAndDeleteAction extends AppBaseAction {
         ds.reference.delete();
       }
     });
-    firestore.collection('matches').where("playerTwoId", isEqualTo: homePlayer.id).getDocuments().then((snapshot) {
-      for (DocumentSnapshot ds in snapshot.documents) {
+    getIt
+        .get<FirebaseFirestore>()
+        .collection('matches')
+        .where("playerTwoId", isEqualTo: homePlayer.id)
+        .get()
+        .then((snapshot) {
+      for (DocumentSnapshot ds in snapshot.docs) {
         ds.reference.delete();
       }
     });

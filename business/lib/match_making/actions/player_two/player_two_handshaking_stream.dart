@@ -24,8 +24,11 @@ class PlayerTwoHandshakingStream extends AppBaseAction {
 
   PlayerTwoHandshakingStream.startStream({@required this.playerID}) {
     _startStream = true;
-    playerTwoNameStream =
-        getIt.get<Firestore>().collection('matches').where("playerTwoId", isEqualTo: playerID).snapshots();
+    playerTwoNameStream = getIt
+        .get<FirebaseFirestore>()
+        .collection('matches')
+        .where("playerTwoId", isEqualTo: playerID)
+        .snapshots();
   }
 
   PlayerTwoHandshakingStream.endStream({this.playerID}) {
@@ -36,12 +39,13 @@ class PlayerTwoHandshakingStream extends AppBaseAction {
   AppState reduce() {
     if (_startStream == true) {
       playerTwoNameStreamSub = playerTwoNameStream.listen((QuerySnapshot qs) {
-        if (qs.documents.isNotEmpty) {
-          if (qs.documents.first != null) {
-            if (qs.documents.first.data.isNotEmpty) {
-              if (qs.documents.first.data.containsKey('playerOneId')) {
-                var matchDoc = qs.documents.first;
-                dispatch(FinishHandshakingTwoAndGoToMatchAction(matchDoc: matchDoc)); // Set playerTwoName on firestore
+        if (qs.docs.isNotEmpty) {
+          if (qs.docs.first != null) {
+            if (qs.docs.first.data().isNotEmpty) {
+              if (qs.docs.first.data().containsKey('playerOneId')) {
+                var matchDoc = qs.docs.first;
+                dispatch(FinishHandshakingTwoAndGoToMatchAction(
+                    matchDoc: matchDoc)); // Set playerTwoName on firestore
               }
             }
           }

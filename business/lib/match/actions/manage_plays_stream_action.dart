@@ -20,7 +20,7 @@ class ManagePlaysStreamAction extends AppBaseAction {
 
   ManagePlaysStreamAction.startStream({@required this.matchID}) {
     _startStream = true;
-    playsStream = getIt.get<Firestore>().collection('matches').document(matchID).snapshots();
+    playsStream = getIt.get<FirebaseFirestore>().collection('matches').doc(matchID).snapshots();
   }
 
   ManagePlaysStreamAction.endStream() {
@@ -32,13 +32,13 @@ class ManagePlaysStreamAction extends AppBaseAction {
     if (_startStream == true) {
       playsStreamSub = playsStream.listen((DocumentSnapshot matchDoc) {
         if (matchDoc.data != null) {
-          if (matchDoc.data.isNotEmpty) {
-            if (matchDoc.data.containsKey('exitMatchPlayer')) {
-              var exitMatchPlayer = matchDoc.data['exitMatchPlayer'];
+          if (matchDoc.data().isNotEmpty) {
+            if (matchDoc.data().containsKey('exitMatchPlayer')) {
+              var exitMatchPlayer = matchDoc.data()['exitMatchPlayer'];
               dispatch(PlayerLeftMatchAction(exitMatchPlayer: exitMatchPlayer));
               return null;
-            } else if (matchDoc.data.containsKey('lastPlay')) {
-              var matchData = standardSerializers.deserializeWith(MatchData.serializer, matchDoc.data);
+            } else if (matchDoc.data().containsKey('lastPlay')) {
+              var matchData = standardSerializers.deserializeWith(MatchData.serializer, matchDoc.data());
               dispatch(ChangeMatchHashStateAction(
                 playPosition: matchData.lastPlay.playNumber,
                 playType: matchData.lastPlay.playType,

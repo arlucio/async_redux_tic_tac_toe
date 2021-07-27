@@ -15,27 +15,43 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class RestartMatchAction extends AppBaseAction {
   @override
   Future<AppState> reduce() async {
-    await firestore
+    await getIt
+        .get<FirebaseFirestore>()
         .collection('matches')
-        .document(matchState.matchID)
+        .doc(matchState.matchID)
         .collection('lastWinner')
-        .getDocuments()
+        .get()
         .then((snapshot) {
-      for (DocumentSnapshot ds in snapshot.documents) {
+      for (DocumentSnapshot ds in snapshot.docs) {
         ds.reference.delete();
       }
     });
 
-    await firestore.collection('matches').document(state.matchState.matchID).updateData({
+    await getIt
+        .get<FirebaseFirestore>()
+        .collection('matches')
+        .doc(state.matchState.matchID)
+        .update({
       'lastPlay': FieldValue.delete(),
-      'playerTurn': (homePlayer.number == PlayerNumber.two) ? homePlayer.id : visitingPlayer.id,
+      'playerTurn': (homePlayer.number == PlayerNumber.two)
+          ? homePlayer.id
+          : visitingPlayer.id,
     });
 
     return state.rebuild((b) => b
       ..matchState.update((b) => b
         ..winnerPlayer = PlayerNumber.none
-        ..hashState =
-            BuiltList<String>(['none', 'none', 'none', 'none', 'none', 'none', 'none', 'none', 'none']).toBuilder()));
+        ..hashState = BuiltList<String>([
+          'none',
+          'none',
+          'none',
+          'none',
+          'none',
+          'none',
+          'none',
+          'none',
+          'none'
+        ]).toBuilder()));
   }
 
   void before() => dispatch(NavigateAction<AppState>.pop());

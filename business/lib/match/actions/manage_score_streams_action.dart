@@ -19,24 +19,29 @@ class ManageScoreStreamsAction extends AppBaseAction {
   bool _startStream;
   bool _endStream;
 
-  ManageScoreStreamsAction.startStream({@required this.matchDoc, @required this.homePlayerId})
+  ManageScoreStreamsAction.startStream(
+      {@required this.matchDoc, @required this.homePlayerId})
       : assert((matchDoc != null) && (homePlayerId != null)) {
     _startStream = true;
     homePlayerStream = getIt
-        .get<Firestore>()
+        .get<FirebaseFirestore>()
         .collection('matches')
-        .document(matchDoc.documentID)
+        .doc(matchDoc.id)
         .collection('winners')
         .where('playerID',
-            isEqualTo: (homePlayerId == matchDoc['playerOneId']) ? matchDoc['playerOneId'] : matchDoc['playerTwoId'])
+            isEqualTo: (homePlayerId == matchDoc['playerOneId'])
+                ? matchDoc['playerOneId']
+                : matchDoc['playerTwoId'])
         .snapshots();
     visitingPlayerStream = getIt
-        .get<Firestore>()
+        .get<FirebaseFirestore>()
         .collection('matches')
-        .document(matchDoc.documentID)
+        .doc(matchDoc.id)
         .collection('winners')
         .where('playerID',
-            isEqualTo: (homePlayerId == matchDoc['playerOneId']) ? matchDoc['playerTwoId'] : matchDoc['playerOneId'])
+            isEqualTo: (homePlayerId == matchDoc['playerOneId'])
+                ? matchDoc['playerTwoId']
+                : matchDoc['playerOneId'])
         .snapshots();
   }
 
@@ -48,18 +53,19 @@ class ManageScoreStreamsAction extends AppBaseAction {
   AppState reduce() {
     if (_startStream == true) {
       homePlayerStreamSub = homePlayerStream.listen((QuerySnapshot qs) {
-        if (qs.documents.isNotEmpty) {
-          if (qs.documents.first != null) {
-            var scoreHomePlayer = qs.documents.length;
+        if (qs.docs.isNotEmpty) {
+          if (qs.docs.first != null) {
+            var scoreHomePlayer = qs.docs.length;
             dispatch(UpdateMatchScoreAction(scoreHomePlayer: scoreHomePlayer));
           }
         }
       });
       visitingPlayerStreamSub = visitingPlayerStream.listen((QuerySnapshot qs) {
-        if (qs.documents.isNotEmpty) {
-          if (qs.documents.first != null) {
-            var scoreVisitingPlayer = qs.documents.length;
-            dispatch(UpdateMatchScoreAction(scoreVisitingPlayer: scoreVisitingPlayer));
+        if (qs.docs.isNotEmpty) {
+          if (qs.docs.first != null) {
+            var scoreVisitingPlayer = qs.docs.length;
+            dispatch(UpdateMatchScoreAction(
+                scoreVisitingPlayer: scoreVisitingPlayer));
           }
         }
       });

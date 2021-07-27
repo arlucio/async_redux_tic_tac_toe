@@ -19,7 +19,12 @@ class ManageWinnerStreamAction extends AppBaseAction {
 
   ManageWinnerStreamAction.startStream({@required this.matchID}) {
     _startStream = true;
-    winnersStream = getIt.get<Firestore>().collection('matches').document(matchID).collection('lastWinner').snapshots();
+    winnersStream = getIt
+        .get<FirebaseFirestore>()
+        .collection('matches')
+        .doc(matchID)
+        .collection('lastWinner')
+        .snapshots();
   }
 
   ManageWinnerStreamAction.endStream() {
@@ -30,15 +35,17 @@ class ManageWinnerStreamAction extends AppBaseAction {
   AppState reduce() {
     if (_startStream == true) {
       winnersStreamSub = winnersStream.listen((QuerySnapshot qs) {
-        if (qs.documents != null) {
-          if (qs.documents.isNotEmpty) {
-            var winnerData = qs.documents.first;
+        if (qs.docs != null) {
+          if (qs.docs.isNotEmpty) {
+            var winnerData = qs.docs.first;
             PlayerNumber winnerPlayer;
             if (winnerData['playerID'] == 'DRAW') {
               winnerPlayer = PlayerNumber.neither;
             } else {
               winnerPlayer =
-                  (winnerData['playerID'] == homePlayer.id.toString()) ? homePlayer.number : visitingPlayer.number;
+                  (winnerData['playerID'] == homePlayer.id.toString())
+                      ? homePlayer.number
+                      : visitingPlayer.number;
               dispatch(UpdateWinnerStateAction(winnerPlayer: winnerPlayer));
             }
           }

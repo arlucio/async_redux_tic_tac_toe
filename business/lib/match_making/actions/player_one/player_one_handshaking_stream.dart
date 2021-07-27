@@ -17,7 +17,11 @@ class PlayerOneHandshakingStream extends AppBaseAction {
 
   PlayerOneHandshakingStream.startStream({@required this.matchID}) {
     _startStream = true;
-    matchDataStream = firestore.collection('matches').document(matchID).snapshots();
+    matchDataStream = getIt
+        .get<FirebaseFirestore>()
+        .collection('matches')
+        .doc(matchID)
+        .snapshots();
   }
 
   PlayerOneHandshakingStream.endStream({this.matchID}) {
@@ -29,9 +33,10 @@ class PlayerOneHandshakingStream extends AppBaseAction {
     if (_startStream == true) {
       matchDataStreamSub = matchDataStream.listen((DocumentSnapshot matchDoc) {
         if (matchDoc.data != null) {
-          if (matchDoc.data.isNotEmpty) {
-            if (matchDoc.data.containsKey('playerTwoName')) {
-              dispatch(FinishHandshakingOneAndGoToMatchAction(matchDoc: matchDoc));
+          if (matchDoc.data().isNotEmpty) {
+            if (matchDoc.data().containsKey('playerTwoName')) {
+              dispatch(
+                  FinishHandshakingOneAndGoToMatchAction(matchDoc: matchDoc));
               matchDataStreamSub.cancel();
             }
           }
