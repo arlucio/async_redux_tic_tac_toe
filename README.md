@@ -6,10 +6,10 @@
     <img src="https://github.com/arlucio/async_redux_tic_tac_toe/raw/master/assets/logo.png" alt="Logo" width=320 height=82>
   </a>
 
-<h3 align="center">City Weather App</h3>
+<h3 align="center">Async_Redux Tic Tac Toe</h3>
 
   <p align="center">
-    My implementation of a Weather App using Bloc and Cubit.
+    Multiplayer TicTacToe Game App with Matchmaking developed as a Flutter showcase using async_redux package and Firebase.
 </p>
 
 <div align="center">
