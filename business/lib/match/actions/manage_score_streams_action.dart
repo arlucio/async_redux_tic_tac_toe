@@ -23,6 +23,7 @@ class ManageScoreStreamsAction extends AppBaseAction {
       {@required this.matchDoc, @required this.homePlayerId})
       : assert((matchDoc != null) && (homePlayerId != null)) {
     _startStream = true;
+
     homePlayerStream = getIt
         .get<FirebaseFirestore>()
         .collection('matches')
@@ -33,6 +34,7 @@ class ManageScoreStreamsAction extends AppBaseAction {
                 ? matchDoc['playerOneId']
                 : matchDoc['playerTwoId'])
         .snapshots();
+
     visitingPlayerStream = getIt
         .get<FirebaseFirestore>()
         .collection('matches')

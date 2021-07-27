@@ -39,7 +39,7 @@ packages:
   business:
     dependency: "direct main"
     description:
-      path: "../business"
+      path: "..\\business"
       relative: true
     source: path
     version: "1.0.0+1"
