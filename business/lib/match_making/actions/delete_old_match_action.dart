@@ -10,20 +10,21 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class DeleteOldMatchAction extends AppBaseAction {
   @override
   Future<AppState> reduce() async {
-    var f1 = firestore
+    var f1 = getIt
+        .get<FirebaseFirestore>()
         .collection('matches')
         .where("playerOneId", isEqualTo: homePlayer.id)
-        .getDocuments()
+        .get()
         .then((snapshot) {
-      for (DocumentSnapshot ds in snapshot.documents) {
+      for (DocumentSnapshot ds in snapshot.docs) {
         //
-        ds.reference.collection('lastWinner').getDocuments().then((snapshot) {
-          for (DocumentSnapshot ds in snapshot.documents) {
+        ds.reference.collection('lastWinner').get().then((snapshot) {
+          for (DocumentSnapshot ds in snapshot.docs) {
             ds.reference.delete();
           }
 
-          ds.reference.collection('winners').getDocuments().then((snapshot) {
-            for (DocumentSnapshot ds in snapshot.documents) {
+          ds.reference.collection('winners').get().then((snapshot) {
+            for (DocumentSnapshot ds in snapshot.docs) {
               ds.reference.delete();
             }
           });
@@ -33,12 +34,13 @@ class DeleteOldMatchAction extends AppBaseAction {
       }
     });
 
-    var f2 = firestore
+    var f2 = getIt
+        .get<FirebaseFirestore>()
         .collection('matches')
         .where("playerTwoId", isEqualTo: homePlayer.id)
-        .getDocuments()
+        .get()
         .then((snapshot) {
-      for (DocumentSnapshot ds in snapshot.documents) {
+      for (DocumentSnapshot ds in snapshot.docs) {
         ds.reference.delete();
       }
     });
