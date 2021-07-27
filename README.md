@@ -3,7 +3,7 @@
 
 <p align="center">
   <a href="https://flutter.io/">
-    <img src="https://github.com/arlucio/async_redux_tic_tac_toe/raw/master/assets/logo.png" alt="Logo" width=72 height=72>
+    <img src="https://github.com/arlucio/async_redux_tic_tac_toe/raw/master/assets/logo.png" alt="Logo" width=320 height=82>
   </a>
 
 <h3 align="center">City Weather App</h3>
